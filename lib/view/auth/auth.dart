@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/view/otp/otp.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -56,6 +57,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
                 child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Email',
                     hintStyle: TextStyle(color: Colors.grey.shade500),
@@ -81,9 +83,9 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
                 child: Stack(
-                  // alignment: Alignment.topRight,
                   children: [
                     TextFormField(
+                      
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         hintText: 'Password',
@@ -120,28 +122,64 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               const SizedBox(height: 25),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _isSignUp = !_isSignUp; // Toggle the state
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  _isSignUp ? 'Sign Up' : 'Sign In', // Toggle the text
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
+              _isSignUp
+                  ? ElevatedButton(
+                      onPressed: () {
+                        // Handle Sign Up
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 100, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 11, 161, 154),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )),
+                        const SizedBox(height: 25),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Handle Sign In
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 11, 161, 154),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 100, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,8 +199,8 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     child: Text(
-                      _isSignUp ? 'Sign In' : 'Sign Up', // Toggle the text
-                      style: TextStyle(
+                      _isSignUp ? 'Sign In' : 'Sign Up',
+                      style: const TextStyle(
                           color: Color.fromARGB(255, 11, 161, 154),
                           fontSize: 16),
                     ),
@@ -178,7 +216,7 @@ class _SignUpState extends State<SignUp> {
                   GestureDetector(
                     onTap: () {},
                     child: SizedBox(
-                      width: 45,
+                      width: 35,
                       child: Image.asset(
                         'assets/image/2993685_brand_brands_google_logo_logos_icon.png',
                       ),
@@ -188,10 +226,17 @@ class _SignUpState extends State<SignUp> {
                     width: 55,
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OtpScreen(),
+                        ),
+                      );
+                    },
                     icon: const Icon(
                       Icons.phone_android_rounded,
-                      size: 43,
+                      size: 35,
                     ),
                   )
                 ],

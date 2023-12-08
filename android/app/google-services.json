@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "187905642713",
+    "project_id": "fir-kaylasoft",
+    "storage_bucket": "fir-kaylasoft.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187905642713:android:d47fc0d9b41eb320702ec8",
+        "android_client_info": {
+          "package_name": "com.example.student_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR-f51cFXVVP-RG86LM6wCWNXZdw8U8bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
