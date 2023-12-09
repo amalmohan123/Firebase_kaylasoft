@@ -1,49 +1,54 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management/controller/auth_provider.dart';
+
+import 'package:student_management/service/firebase_auth.dart';
+import 'package:student_management/util/snacbar.dart';
+import 'package:student_management/view/auth/widgets/welcome_text.dart';
 import 'package:student_management/view/otp/otp.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+
+
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({Key? key}) : super(key: key);
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _SignUpState extends State<SignUp> {
-  bool _obscurePassword = true;
-  bool _isSignUp = true; // Track the state of the page
+class _WelcomePageState extends State<WelcomePage> {
+  // bool _obscurePassword = true;
+  // // bool _isSignUp = true;
+
+  final FirebaseAuthService _auth = FirebaseAuthService();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+final authProvider =Provider.of<AuthProvi>(context); 
+
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 237, 242, 246),
+      backgroundColor: const Color.fromARGB(255, 237, 242, 246),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 100, left: 22, right: 22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Hello!..',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Color.fromARGB(255, 11, 161, 154),
-                      ),
-                    ),
-                    Text(
-                      'Welcome back',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Color.fromARGB(255, 14, 155, 148),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const WelcomeText(),
               const SizedBox(height: 65),
               Container(
                 decoration: BoxDecoration(
@@ -57,18 +62,25 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
                 child: TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    hintStyle: TextStyle(color: Colors.grey.shade500),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
-                  ),
-                ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter the email';
+                      } else {
+                        return null;
+                      }
+                    }),
               ),
               const SizedBox(height: 20),
               Container(
@@ -85,8 +97,8 @@ class _SignUpState extends State<SignUp> {
                 child: Stack(
                   children: [
                     TextFormField(
-                      
-                      obscureText: _obscurePassword,
+                      controller: passwordController,
+                      obscureText: authProvider.obscurePassword,
                       decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.grey.shade500),
@@ -97,13 +109,20 @@ class _SignUpState extends State<SignUp> {
                           borderSide: BorderSide.none,
                         ),
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter the password';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     Align(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8, left: 290),
                         child: IconButton(
                           icon: Icon(
-                            _obscurePassword
+                          obscurePassword
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                             color: Colors.grey,
@@ -111,7 +130,7 @@ class _SignUpState extends State<SignUp> {
                           onPressed: () {
                             setState(
                               () {
-                                _obscurePassword = !_obscurePassword;
+                                obscurePassword = !obscurePassword;
                               },
                             );
                           },
@@ -122,10 +141,10 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               const SizedBox(height: 25),
-              _isSignUp
+          
                   ? ElevatedButton(
                       onPressed: () {
-                        // Handle Sign Up
+                        signUp();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent,
@@ -146,20 +165,23 @@ class _SignUpState extends State<SignUp> {
                   : Column(
                       children: [
                         Align(
-                            alignment: Alignment.topRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 11, 161, 154),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )),
+                          alignment: Alignment.topRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/ForgotPassword");
+                            },
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 11, 161, 154),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 25),
                         ElevatedButton(
                           onPressed: () {
-                            // Handle Sign In
+                            signIn();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -194,9 +216,10 @@ class _SignUpState extends State<SignUp> {
                   ),
                   TextButton(
                     onPressed: () {
-                      setState(() {
-                        _isSignUp = !_isSignUp; // Toggle the state
-                      });
+                      // setState(() {
+                      //   _isSignUp = !_isSignUp; 
+                      // });
+                      Provider.of(context,listen: false)
                     },
                     child: Text(
                       _isSignUp ? 'Sign In' : 'Sign Up',
@@ -214,7 +237,9 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      FirebaseAuthService().signInWithGoogle(context);
+                    },
                     child: SizedBox(
                       width: 35,
                       child: Image.asset(
@@ -246,5 +271,33 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void signUp() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    User? user =
+        await _auth.singUpWithEmailAndpassword(email, password, context);
+
+    if (user != null) {
+      showSnackbar(context, 'User is Successfully created');
+
+      Navigator.pushNamed(context, "/Homepage");
+    }
+  }
+
+  void signIn() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    User? user =
+        await _auth.singInWithEmailAndpassword(email, password, context);
+
+    if (user != null) {
+      showSnackbar(context, 'User is Successfully SignIn');
+
+      Navigator.pushNamed(context, "/Homepage");
+    }
   }
 }

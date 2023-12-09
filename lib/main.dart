@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:student_management/view/auth/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:student_management/controller/auth_provider.dart';
+import 'package:student_management/view/auth/welcome_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student_management/view/forgot_pass.dart';
+import 'package:student_management/view/home/home.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -17,14 +21,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create:(context)=>AuthProvi())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        
+      
+        routes: {
+          '/': (context) => const WelcomePage(),
+          '/Homepage': (context) => const HomePage(),
+          '/WelcomePage': (context) => const WelcomePage(),
+          '/ForgotPassword':(context)=> const ForgotPassword(),
+        },
       ),
-      home: const SignUp(),
     );
   }
 }
