@@ -162,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                 return Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
+                    
                     title: Text(documentSnapshot['name']),
                     subtitle: Text(documentSnapshot['age']!.toString()),
                     trailing: SizedBox(

@@ -19,8 +19,8 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  // bool _obscurePassword = true;
-  // // bool _isSignUp = true;
+  bool obscurePassword = true;
+  bool isSignUp = true;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -38,7 +38,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
 
-final authProvider =Provider.of<AuthProvi>(context); 
+
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 237, 242, 246),
@@ -98,7 +98,7 @@ final authProvider =Provider.of<AuthProvi>(context);
                   children: [
                     TextFormField(
                       controller: passwordController,
-                      obscureText: authProvider.obscurePassword,
+                      obscureText: obscurePassword,
                       decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.grey.shade500),
@@ -141,7 +141,7 @@ final authProvider =Provider.of<AuthProvi>(context);
                 ),
               ),
               const SizedBox(height: 25),
-          
+          isSignUp
                   ? ElevatedButton(
                       onPressed: () {
                         signUp();
@@ -207,7 +207,7 @@ final authProvider =Provider.of<AuthProvi>(context);
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _isSignUp
+                    isSignUp
                         ? 'Already have an account?'
                         : 'Don\'t have an account?',
                     style: TextStyle(
@@ -216,13 +216,13 @@ final authProvider =Provider.of<AuthProvi>(context);
                   ),
                   TextButton(
                     onPressed: () {
-                      // setState(() {
-                      //   _isSignUp = !_isSignUp; 
-                      // });
-                      Provider.of(context,listen: false)
+                      setState(() {
+                        isSignUp = !isSignUp; 
+                      });
+                    
                     },
                     child: Text(
-                      _isSignUp ? 'Sign In' : 'Sign Up',
+                      isSignUp ? 'Sign In' : 'Sign Up',
                       style: const TextStyle(
                           color: Color.fromARGB(255, 11, 161, 154),
                           fontSize: 16),

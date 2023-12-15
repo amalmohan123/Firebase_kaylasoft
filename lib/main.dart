@@ -21,26 +21,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create:(context)=>AuthProvi())
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        
-      
-        routes: {
-          '/': (context) => const WelcomePage(),
-          '/Homepage': (context) => const HomePage(),
-          '/WelcomePage': (context) => const WelcomePage(),
-          '/ForgotPassword':(context)=> const ForgotPassword(),
-        },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
+      routes: {
+        '/': (context) => const WelcomePage(),
+        '/Homepage': (context) => const HomePage(),
+        '/WelcomePage': (context) => const WelcomePage(),
+        '/ForgotPassword': (context) => const ForgotPassword(),
+      },
     );
   }
 }
